@@ -48,8 +48,3 @@ for column in ['Rainfall_mm', 'Temperature_Celsius', 'Days_to_Harvest', 'Yield_t
     plt.ylabel("Average Yield (tons per hectare)", fontsize=14)
     plt.colorbar(label='Density')
     plt.show()
-
-
-
-
-
