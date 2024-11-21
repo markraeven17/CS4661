@@ -2,11 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
 
 df = pd.read_csv('crop_yield.csv')
 summary_stats = df.describe()
@@ -17,10 +13,21 @@ mean_yield = df['Yield_tons_per_hectare'].mean()
 median_yield = df['Yield_tons_per_hectare'].median()
 std_dev_price = df["Yield_tons_per_hectare"].std()
 
+print(df['Region'].value_counts())
+print(df['Soil_Type'].value_counts())
+print(df['Crop'].value_counts())
+print(df['Weather_Condition'].value_counts())
+
+for column in ['Region', 'Soil_Type', 'Crop', 'Weather_Condition']:
+ sns.countplot(data=df, x=f'{column}', color='green')
+ plt.show()
+
 # Display the results
 print(f"Mean Crop Yield: {mean_yield:.2f} tons per hectare")
 print(f"Median Crop Yield: {median_yield:.2f} tons per hectare")
 print(f"Standard Deviation: {std_dev_price:.2f}")
+
+print(df[['Rainfall_mm', 'Temperature_Celsius', 'Days_to_Harvest', 'Yield_tons_per_hectare']].describe())
 
 plt.figure(figsize=(40, 24))
 sns.histplot(df['Yield_tons_per_hectare'], bins=10, kde=True, color='green')
