@@ -37,6 +37,19 @@ print(f"Predictions: {predictions[:5]}")
 print(f"True Values: {y_test[:5]}")
 print(f"Model Accuracy (R^2): {regressor.score(X_test, y_test)}")
 
-plt.figure(figsize=(20, 10))
-plot_tree(regressor.estimators_[0], filled=True, feature_names=X.columns, rounded=True)
-plt.show()
+importances = regressor.feature_importances_
+
+# Sort the feature importances
+indices = np.argsort(importances)[::-1]
+
+# Plot the feature importances
+import shap
+
+# Initialize the explainer
+explainer = shap.TreeExplainer(regressor)
+
+# Compute SHAP values for the test set
+shap_values = explainer.shap_values(X_test)
+
+# Visualize the SHAP values
+shap.summary_plot(shap_values, X_test)

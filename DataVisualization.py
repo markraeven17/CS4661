@@ -48,3 +48,77 @@ for column in ['Rainfall_mm', 'Temperature_Celsius', 'Days_to_Harvest', 'Yield_t
     plt.ylabel("Average Yield (tons per hectare)", fontsize=14)
     plt.colorbar(label='Density')
     plt.show()
+
+sns.boxplot(data=df, x='Irrigation_Used', y='Yield_tons_per_hectare', color='dodgerblue')
+plt.show()
+sns.boxplot(data=df, x='Fertilizer_Used', y='Yield_tons_per_hectare', color='dodgerblue')
+plt.show()
+
+# Pivot data for heatmap
+heatmap_data = df.pivot_table(
+    index='Region',
+    columns='Crop',
+    values='Yield_tons_per_hectare',
+    aggfunc='mean'
+)
+
+# Create heatmap
+sns.heatmap(heatmap_data, cmap='YlGnBu', annot=True, fmt='.2f')
+
+# Add title and labels
+plt.title('Average Yield by Region and Crop')
+plt.xlabel('Crop')
+plt.ylabel('Region')
+plt.show()
+
+heatmap_data = df.pivot_table(
+    index='Soil_Type',
+    columns='Crop',
+    values='Yield_tons_per_hectare',
+    aggfunc='mean'
+)
+
+# Create heatmap
+sns.heatmap(heatmap_data, cmap='YlGnBu', annot=True, fmt='.2f')
+
+# Add title and labels
+plt.title('Average Yield by Soil Type and Crop')
+plt.xlabel('Crop')
+plt.ylabel('Soil Type')
+plt.show()
+
+heatmap_data = df.pivot_table(
+    index='Weather_Condition',
+    columns='Crop',
+    values='Yield_tons_per_hectare',
+    aggfunc='mean'
+)
+
+# Create heatmap
+sns.heatmap(heatmap_data, cmap='YlGnBu', annot=True, fmt='.2f')
+
+# Add title and labels
+plt.title('Average Yield by Weather Condition and Crop')
+plt.xlabel('Crop')
+plt.ylabel('Soil Type')
+plt.show()
+
+heatmap_data = df.pivot_table(
+    index='Irrigation_Used',
+    columns='Soil_Type',
+    values='Yield_tons_per_hectare',
+    aggfunc='mean'
+)
+
+# Create heatmap
+sns.heatmap(heatmap_data, cmap='YlGnBu', annot=True, fmt='.2f')
+
+# Add title and labels
+plt.title('Average Yield by Weather Condition and Crop')
+plt.xlabel('Crop')
+plt.ylabel('Soil Type')
+plt.show()
+
+
+
+
