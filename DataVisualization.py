@@ -17,6 +17,9 @@ print(df['Soil_Type'].value_counts())
 print(df['Crop'].value_counts())
 print(df['Weather_Condition'].value_counts())
 
+df.hist(bins=60, figsize =(20,10))
+plt.show()
+
 for column in ['Region', 'Soil_Type', 'Crop', 'Weather_Condition']:
  ax = sns.countplot(data=df, x=f'{column}', color='green')
  for p in ax.patches:

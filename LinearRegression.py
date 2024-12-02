@@ -12,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn import metrics
 
+
 df = pd.read_csv('crop_yield.csv')
 print(df)
 
@@ -32,29 +33,41 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
-X_test= scaler.transform(X_test)
+X_test = scaler.transform(X_test)
 
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-y_predict = model.predict(X_test)
+# Predict on training data
+y_train_pred = model.predict(X_train)
+training_rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
+print(f"Training RMSE: {training_rmse}")
 
+# Predict on test data
+y_test_pred = model.predict(X_test)
+test_rmse = np.sqrt(mean_squared_error(y_test, y_test_pred))
+print(f"Test RMSE: {test_rmse}")
+
+# Cross-validation
 cv_scores = cross_val_score(model, X, y, cv=5, scoring='neg_mean_squared_error')
-
-# Convert the negative MSE scores to positive, then calculate RMSE for each fold
 rmse_scores = np.sqrt(-cv_scores)
-
-# Calculate the average RMSE across all folds
 mean_rmse = rmse_scores.mean()
+
+# Now compute the performance metrics
+mae = mean_absolute_error(y_test, y_test_pred)
+print(f"Mean Absolute Error (MAE): {mae}")
+
+mse = mean_squared_error(y_test, y_test_pred)
+print(f"Mean Squared Error (MSE): {mse}")
+
+rmse = np.sqrt(mse)
+print(f"Root Mean Squared Error (RMSE): {rmse}")
+
+r2 = r2_score(y_test, y_test_pred)
+print(f"R-squared (R^2): {r2}")
 
 print("RMSE for each fold:", rmse_scores)
 print("Average RMSE using cross-validation:", mean_rmse)
 
-plt.scatter(y_test, y_predict)
-plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], color='red', linestyle=':')
-plt.xlabel('Actual Yield (tons per hectare)')
-plt.ylabel('Predicted Yield (tons per hectare)')
-plt.title('Actual vs Predicted Yield')
-plt.show()
 
-#12
+

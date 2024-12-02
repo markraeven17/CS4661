@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 df = pd.read_csv('crop_yield.csv')
 print(df)
 
+
+
 categorical_columns = df.select_dtypes(include=['object']).columns.tolist()
 encoder = OneHotEncoder(sparse_output=False)
 one_hot_encoded = encoder.fit_transform(df[categorical_columns])
@@ -32,24 +34,21 @@ y_test = y_test.to_numpy().ravel()
 
 regressor.fit(X_train, y_train)
 
-predictions = regressor.predict(X_test)
-print(f"Predictions: {predictions[:5]}")
-print(f"True Values: {y_test[:5]}")
-print(f"Model Accuracy (R^2): {regressor.score(X_test, y_test)}")
 
+predictions = regressor.predict(X_test)
 importances = regressor.feature_importances_
 
 # Sort the feature importances
 indices = np.argsort(importances)[::-1]
 
-# Plot the feature importances
-import shap
+important_features = np.argsort(importances)[::-1]
+print("Feature ranking:")
+for i in important_features:
+    print(f"{X_train.columns[i]}: {importances[i]}")
 
-# Initialize the explainer
-explainer = shap.TreeExplainer(regressor)
+print(f"Predictions: {predictions[:5]}")
+print(f"True Values: {y_test[:5]}")
+print(f"Model Accuracy (R^2): {regressor.score(X_test, y_test)}")
 
-# Compute SHAP values for the test set
-shap_values = explainer.shap_values(X_test)
 
-# Visualize the SHAP values
-shap.summary_plot(shap_values, X_test)
+
